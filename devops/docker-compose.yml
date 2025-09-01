@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  jenkins:
+    build: ../jenkins-docker
+    container_name: jenkins
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $HOME/.kube:/var/jenkins_home/.kube:ro
+    networks:
+      - jenkins-net
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - jenkins-net
+
+volumes:
+  jenkins_home:
+
+networks:
+  jenkins-net:
+    driver: bridge
