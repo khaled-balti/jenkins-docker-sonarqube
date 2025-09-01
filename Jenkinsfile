@@ -10,6 +10,10 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps { deleteDir() }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE}") {
