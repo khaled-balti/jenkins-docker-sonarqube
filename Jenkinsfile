@@ -53,8 +53,8 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh """
-                    kubectl apply -f k8s/deployment.yml
-                    kubectl apply -f k8s/service.yml
+                    kubectl --kubeconfig=/var/jenkins_home/.kube/config apply --validate=false -f k8s/deployment.yml
+                    kubectl --kubeconfig=/var/jenkins_home/.kube/config apply --validate=false -f k8s/service.yml
                 """
             }
         }
