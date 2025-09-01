@@ -21,7 +21,7 @@ kind: Config
 clusters:
 - name: my-cluster
   cluster:
-    server: https://192.168.49.2
+    server: https://host.docker.internal:8443
     insecure-skip-tls-verify: true
 contexts:
 - name: my-context
