@@ -11,7 +11,16 @@ pipeline {
 
     stages {
         stage('Clean Workspace') {
-            steps { deleteDir() }
+            steps {
+                deleteDir()
+            }
+        }
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'master',
+                     url: 'https://github.com/khaled-balti/jenkins-docker-sonarqube.git'
+            }
         }
 
         stage('SonarQube Analysis') {
@@ -54,6 +63,18 @@ pipeline {
                     kubectl apply -f k8s/service.yaml
                 """
             }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
