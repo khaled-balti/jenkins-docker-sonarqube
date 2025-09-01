@@ -1,9 +1,8 @@
 FROM jenkins/jenkins:lts
 
-# Switch to root
 USER root
 
-# Install Docker CLI (static binary)
+# Install Docker CLI
 RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-24.0.9.tgz \
     | tar -xz -C /usr/local/bin --strip-components=1 docker/docker && \
     chmod +x /usr/local/bin/docker
@@ -13,12 +12,11 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
     chmod +x kubectl && \
     mv kubectl /usr/local/bin/
 
-# Ensure Jenkins home kube folder exists
-RUN mkdir -p /var/jenkins_home/.kube \
-    && chown -R jenkins:jenkins /var/jenkins_home/.kube
+# Ensure kube folder exists (will mount local kubeconfig)
+RUN mkdir -p /var/jenkins_home/.kube && \
+    chown -R jenkins:jenkins /var/jenkins_home/.kube
 
-# Switch back to Jenkins user
 USER jenkins
 
-# Set KUBECONFIG environment variable
+# Point Jenkins to kubeconfig
 ENV KUBECONFIG=/var/jenkins_home/.kube/config
