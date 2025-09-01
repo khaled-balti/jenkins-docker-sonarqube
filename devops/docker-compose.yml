@@ -3,15 +3,16 @@ services:
     build: ../jenkins-docker
     container_name: jenkins
     user: root
-    network_mode: "host"  
     ports:
       - "8080:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - ~/jenkins-kube/config:/var/jenkins_home/.kube/config:ro   # container-ready kubeconfig
-      - $HOME/.minikube:/home/jenkins/.minikube:ro                # host Minikube files
+      - ~/jenkins-kube/config:/var/jenkins_home/.kube/config:ro
+      - $HOME/.minikube:/home/jenkins/.minikube:ro
+    networks:
+      - jenkins-net   # same network as SonarQube
 
   sonarqube:
     image: sonarqube:community
