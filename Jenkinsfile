@@ -5,21 +5,14 @@ pipeline {
         DOCKER_IMAGE = "my-web-app:latest"
         DOCKER_HUB_IMAGE = "khaled122/my-web-app:latest"
         SONARQUBE = "sonarqube"
-        SONAR_TOKEN = credentials('SONAR_TOKEN')
-        DOCKER_HUB_CRED = credentials('DOCKER_HUB_CRED')
+        SONAR_TOKEN = credentials('SONAR_TOKEN')        // stored in Jenkins
+        DOCKER_HUB_CRED = credentials('DOCKER_HUB_CRED') // stored in Jenkins
     }
 
     stages {
-        stage('Clean Workspace') {
+        stage('Checkout') {
             steps {
-                deleteDir()
-            }
-        }
-
-        stage('Checkout Code') {
-            steps {
-                git branch: 'master',
-                     url: 'https://github.com/khaled-balti/jenkins-docker-sonarqube.git'
+                git branch: 'master', url: 'https://github.com/khaled-balti/jenkins-docker-sonarqube.git'
             }
         }
 
@@ -63,18 +56,6 @@ pipeline {
                     kubectl apply -f k8s/service.yaml
                 """
             }
-        }
-    }
-
-    post {
-        always {
-            cleanWs()
-        }
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
