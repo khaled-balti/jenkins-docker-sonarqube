@@ -5,17 +5,11 @@ pipeline {
         DOCKER_IMAGE = "my-web-app:latest"
         DOCKER_HUB_IMAGE = "khaled122/my-web-app:latest"
         SONARQUBE = "sonarqube"
-        SONAR_TOKEN = credentials('SONAR_TOKEN')        // stored in Jenkins
-        DOCKER_HUB_CRED = credentials('DOCKER_HUB_CRED') // stored in Jenkins
+        SONAR_TOKEN = credentials('SONAR_TOKEN')
+        DOCKER_HUB_CRED = credentials('DOCKER_HUB_CRED')
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'master', url: 'https://github.com/khaled-balti/jenkins-docker-sonarqube.git'
-            }
-        }
-
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE}") {
