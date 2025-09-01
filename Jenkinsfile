@@ -7,6 +7,7 @@ pipeline {
         SONARQUBE = "sonarqube"
         SONAR_TOKEN = credentials('SONAR_TOKEN')        // stored in Jenkins
         DOCKER_HUB_CRED = credentials('DOCKER_HUB_CRED') // stored in Jenkins
+        KUBECONFIG = '/var/jenkins_home/kube/config'
     }
 
     stages {
